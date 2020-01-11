@@ -27,5 +27,31 @@ public class JokeOutDTO {
     
     private String Reference;
     private List<JokeDTO> jokes = new ArrayList();
+
+    public JokeOutDTO() {
+        this.Reference = "api.chucknorris.io";
+    }
+    
+    public void addJoke(JokeDTO joke) {
+        jokes.add(joke);
+    }
+
+    public String getReference() {
+        return Reference;
+    }
+
+    public void setReference(String Reference) {
+        this.Reference = Reference;
+    }
+
+    public List<JokeDTO> getJokes() {
+        return jokes;
+    }
+
+    public void setJokes(List<JokeDTO> jokes) {
+        this.jokes = jokes;
+    }
+    
+    
     
 }

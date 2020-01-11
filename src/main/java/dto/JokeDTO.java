@@ -19,9 +19,9 @@ public class JokeDTO {
     public JokeDTO() {
     }
 
-    public JokeDTO(String category, String joke) {
-        this.category = category;
-        this.joke = joke;
+    public JokeDTO(JokeInDTO joke) {
+        this.category = joke.getCategory();
+        this.joke = joke.getValue();
     }
 
     public String getCategory() {
