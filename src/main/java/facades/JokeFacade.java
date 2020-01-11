@@ -6,12 +6,13 @@ import com.google.gson.JsonObject;
 import dto.JokeDTO;
 import dto.JokeInDTO;
 import dto.JokeOutDTO;
-import entities.RenameMe;
+import entities.Request;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,7 +98,8 @@ public class JokeFacade {
 
     public JokeOutDTO getJoke(String categories, boolean permission) throws InterruptedException, ExecutionException, TimeoutException {
         List<String> categoriesList = handleString(categories, permission);
-
+        saveHistoricalData(categoriesList, new Date());
+        
         /*
         Get the Futures asynchronously.
          */
@@ -191,6 +193,10 @@ public class JokeFacade {
 
         return categories;
 
+    }
+
+    private void saveHistoricalData(List<String> categoriesList, Date date) {
+        
     }
 
 }
