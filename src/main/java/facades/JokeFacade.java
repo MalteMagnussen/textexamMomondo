@@ -128,7 +128,7 @@ public class JokeFacade {
             returnJoke.addJoke(new JokeDTO(j));
         });
 
-        workingJack.shutdown();
+//        workingJack.shutdown();
         return returnJoke;
 //        workingJack.shutdown();
     }
@@ -180,7 +180,7 @@ public class JokeFacade {
 
         for (String s : categories) {
             if (!acceptable_categories.contains(s)) {
-                throw new WebApplicationException("Category " + s + " doesn't exist.", Response.Status.BAD_REQUEST);
+                throw new WebApplicationException("Category " + s + " does not exist.", Response.Status.BAD_REQUEST);
             }
         }
 
