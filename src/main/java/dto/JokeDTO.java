@@ -20,7 +20,7 @@ public class JokeDTO {
     }
 
     public JokeDTO(JokeInDTO joke) {
-        this.category = joke.getCategory();
+        this.category = joke.getCategories()[0];
         this.joke = joke.getValue();
     }
 

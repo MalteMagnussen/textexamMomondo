@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeoutException;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -64,7 +65,7 @@ public class JokeResource {
     @GET
     @Path("{categories}")
     @Produces(MediaType.APPLICATION_JSON)
-    public JokeOutDTO getJson(@PathParam("categories") String categories) throws InterruptedException, ExecutionException {
+    public JokeOutDTO getJson(@PathParam("categories") String categories) throws InterruptedException, ExecutionException, TimeoutException {
         return FACADE.getJoke(categories);
     }
 

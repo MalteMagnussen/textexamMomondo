@@ -11,12 +11,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeoutException;
+import javafx.util.Pair;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -86,36 +93,70 @@ public class JokeFacade {
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
-    public JokeOutDTO getJoke(String categories) throws InterruptedException, ExecutionException {
-
+    
+    public JokeOutDTO getJoke(String categories) throws InterruptedException, ExecutionException, TimeoutException {
         List<String> categoriesList = handleString(categories);
 
         /*
         Get the Futures asynchronously.
          */
-        List<Future<JokeInDTO>> jokes = new ArrayList();
-        categoriesList.forEach((c) -> {
-            Future<JokeInDTO> joke = workingJack.submit(() -> {
-                return GSON.fromJson(doGetJson(c), JokeInDTO.class);
-            });
-            jokes.add(joke);
-        });
+        Queue<Future<JokeInDTO>> queue = new ArrayBlockingQueue(categoriesList.size());
 
-        // Make them into JokeInDTOs
-        List<JokeInDTO> inJokes = new ArrayList();
-        for (Future<JokeInDTO> j : jokes) {
-            inJokes.add(j.get());
+        for (String endpoint : categoriesList) {
+            Future<JokeInDTO> future = workingJack.submit(() -> GSON.fromJson(doGetJson(endpoint), JokeInDTO.class));
+            queue.add(future);
         }
 
+        List<JokeInDTO> inJokes = new ArrayList();
+        while (!queue.isEmpty()) {
+            Future<JokeInDTO> future = queue.poll();
+            if (future.isDone()) {
+                inJokes.add(future.get());
+            } else {
+                queue.add(future);
+            }
+        }
+        
         // Make JokeInDTO into a JokeOutDTO
         JokeOutDTO returnJoke = new JokeOutDTO();
         inJokes.forEach((j) -> {
             returnJoke.addJoke(new JokeDTO(j));
         });
 
+        workingJack.shutdown();
         return returnJoke;
+//        workingJack.shutdown();
     }
+
+//    public JokeOutDTO getJoke(String categories) throws InterruptedException, ExecutionException {
+//
+//        List<String> categoriesList = handleString(categories);
+//
+//        /*
+//        Get the Futures asynchronously.
+//         */
+//        List<Future<JokeInDTO>> jokes = new ArrayList();
+//        categoriesList.forEach((c) -> {
+//            Future<JokeInDTO> joke = workingJack.submit(() -> {
+//                return GSON.fromJson(doGetJson(c), JokeInDTO.class);
+//            });
+//            jokes.add(joke);
+//        });
+//
+//        // Make them into JokeInDTOs
+//        List<JokeInDTO> inJokes = new ArrayList();
+//        for (Future<JokeInDTO> j : jokes) {
+//            inJokes.add(j.get());
+//        }
+//
+//        // Make JokeInDTO into a JokeOutDTO
+//        JokeOutDTO returnJoke = new JokeOutDTO();
+//        inJokes.forEach((j) -> {
+//            returnJoke.addJoke(new JokeDTO(j));
+//        });
+//
+//        return returnJoke;
+//    }
 
     /**
      * Helper function
