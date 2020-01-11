@@ -5,13 +5,18 @@
  */
 package dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * This is a representation of a joke coming from 
+ * This is a representation of a joke coming from
  * https://api.chucknorris.io/jokes/random?category=food
+ *
  * @author Malte
  */
 public class JokeInDTO {
-/*
+
+    /*
  * Example of a response from joke API. 
  * {"categories":["food"],
  * "created_at":"2020-01-05 13:42:19.576875",
@@ -20,25 +25,21 @@ public class JokeInDTO {
  * "updated_at":"2020-01-05 13:42:19.576875",
  * "url":"https://api.chucknorris.io/jokes/muujj6xvr16hazym0b5tjw",
  * "value":"When Chuck Norris was a baby, he didn't suck his mother's breast. His mother served him whiskey, straight out of the bottle."}
- */
-    /*
+     */
+ /*
     {"categories":["food"],
     "created_at":"2020-01-05 13:42:23.240175",
     "icon_url":"https://assets.chucknorris.host/img/avatar/chuck-norris.png",
     "id":"zW8KKcrRRoOJ1cW_2m6VaQ","updated_at":"2020-01-05 13:42:23.240175","url":"https://api.chucknorris.io/jokes/zW8KKcrRRoOJ1cW_2m6VaQ","value":"There are more than 1 billion Chinese people throughout the world because Chuck Norris likes Chinese food."}
-    */
-    private String created_at, icon_url, id, updated_at, url, value;
-    private String[] categories;
+     */
+    private String  created_at, icon_url, id, updated_at, url, value;
+    private List<String> categories = new ArrayList();
 
     public JokeInDTO() {
     }
-
-    public String[] getCategories() {
-        return categories;
-    }
-
-    public void setCategories(String[] categories) {
-        this.categories = categories;
+    
+    public String getCategory() {
+        return this.categories.get(0);
     }
 
     public String getCreated_at() {
@@ -88,6 +89,12 @@ public class JokeInDTO {
     public void setValue(String value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "JokeInDTO{" + "categories=" + categories + ", created_at=" + created_at + ", icon_url=" + icon_url + ", id=" + id + ", updated_at=" + updated_at + ", url=" + url + ", value=" + value + '}';
+    }
+
     
     
 }

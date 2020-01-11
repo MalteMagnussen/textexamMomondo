@@ -2,6 +2,7 @@ package facades;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import dto.JokeDTO;
 import dto.JokeInDTO;
 import dto.JokeOutDTO;
@@ -93,7 +94,7 @@ public class JokeFacade {
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
+
     public JokeOutDTO getJoke(String categories) throws InterruptedException, ExecutionException, TimeoutException {
         List<String> categoriesList = handleString(categories);
 
@@ -116,10 +117,14 @@ public class JokeFacade {
                 queue.add(future);
             }
         }
-        
+
         // Make JokeInDTO into a JokeOutDTO
         JokeOutDTO returnJoke = new JokeOutDTO();
         inJokes.forEach((j) -> {
+            if (j == null) {
+                throw new WebApplicationException("Joke is null.", Response.Status.BAD_REQUEST);
+            }
+            System.out.println(j);
             returnJoke.addJoke(new JokeDTO(j));
         });
 
@@ -127,36 +132,6 @@ public class JokeFacade {
         return returnJoke;
 //        workingJack.shutdown();
     }
-
-//    public JokeOutDTO getJoke(String categories) throws InterruptedException, ExecutionException {
-//
-//        List<String> categoriesList = handleString(categories);
-//
-//        /*
-//        Get the Futures asynchronously.
-//         */
-//        List<Future<JokeInDTO>> jokes = new ArrayList();
-//        categoriesList.forEach((c) -> {
-//            Future<JokeInDTO> joke = workingJack.submit(() -> {
-//                return GSON.fromJson(doGetJson(c), JokeInDTO.class);
-//            });
-//            jokes.add(joke);
-//        });
-//
-//        // Make them into JokeInDTOs
-//        List<JokeInDTO> inJokes = new ArrayList();
-//        for (Future<JokeInDTO> j : jokes) {
-//            inJokes.add(j.get());
-//        }
-//
-//        // Make JokeInDTO into a JokeOutDTO
-//        JokeOutDTO returnJoke = new JokeOutDTO();
-//        inJokes.forEach((j) -> {
-//            returnJoke.addJoke(new JokeDTO(j));
-//        });
-//
-//        return returnJoke;
-//    }
 
     /**
      * Helper function
@@ -168,13 +143,15 @@ public class JokeFacade {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("Accept", "application/json;charset=UTF-8");
+            con.setRequestProperty("user-agent", "Application");
             String jsonStr = "";
             try (Scanner scan = new Scanner(con.getInputStream())) {
                 while (scan.hasNext()) {
-                    jsonStr = jsonStr.concat(scan.nextLine());
+                    jsonStr += scan.nextLine();
                 }
             }
-            return jsonStr;
+            String result = GSON.fromJson(jsonStr, JsonObject.class).toString();
+            return result;
         } catch (IOException ex) {
             return "{\"status\":400, \"message\":\"Bad Request\"}";
         }
@@ -190,9 +167,11 @@ public class JokeFacade {
      * @return List of the categories.
      */
     private List<String> handleString(String str) {
-        
-        if (str == null) throw new WebApplicationException("Bad Request.", Response.Status.BAD_REQUEST);
-        
+
+        if (str == null) {
+            throw new WebApplicationException("Bad Request.", Response.Status.BAD_REQUEST);
+        }
+
         List<String> categories = Arrays.asList(str.split(","));
 
         if (categories.size() > 4) {
