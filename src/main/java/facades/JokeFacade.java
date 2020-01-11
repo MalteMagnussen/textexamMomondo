@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import dto.JokeDTO;
 import dto.JokeInDTO;
 import dto.JokeOutDTO;
+import entities.Category;
 import entities.Request;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -75,6 +76,18 @@ public class JokeFacade {
 
     private static List<String> acceptable_categories = new ArrayList<>();
 
+    /*
+     
+    INSERT INTO `testexamMomondo_base`.`CATEGORY`
+(`NAME`)
+VALUES
+("Career"), ("celebrity"), ("dev"), ("explicit"), ("fashion"), ("food"), ("history"), ("money"), ("movie"), ("music"), 
+("political"), ("science"), ("sport"), ("travel");
+
+SELECT * FROM testexamMomondo_base.CATEGORY;
+    
+     */
+    
     /**
      *
      * @param _emf
@@ -98,7 +111,7 @@ public class JokeFacade {
 
     public JokeOutDTO getJoke(String categories, boolean permission) throws InterruptedException, ExecutionException, TimeoutException {
         List<String> categoriesList = handleString(categories, permission);
-        saveHistoricalData(categoriesList, new Date());
+        saveHistoricalData(categoriesList);
         
         /*
         Get the Futures asynchronously.
@@ -195,8 +208,16 @@ public class JokeFacade {
 
     }
 
-    private void saveHistoricalData(List<String> categoriesList, Date date) {
-        
+    private void saveHistoricalData(List<String> categoriesList) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Request request = new Request(categoriesList);
+            em.persist(request);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
 }

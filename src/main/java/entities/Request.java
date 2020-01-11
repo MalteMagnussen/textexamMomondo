@@ -14,7 +14,8 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Request.deleteAllRows", query = "DELETE FROM Request"), //    @NamedQuery(name = "Request.getCount", query = "SELECT count(category) FROM Request category WHERE category. = :name")
+    @NamedQuery(name = "Request.deleteAllRows", query = "DELETE FROM Request"),
+    @NamedQuery(name = "Request.getCount", query = "SELECT count(request) FROM Request request WHERE :name MEMBER OF request.categories")
 })
 public class Request implements Serializable {
 
@@ -40,6 +41,11 @@ public class Request implements Serializable {
 
     public Request() {
         this.categories = new ArrayList();
+    }
+
+    public Request(List<String> categories) {
+        this.categories = new ArrayList();
+        this.timestamb = new Date();
     }
 
     public List<Category> getCategories() {
