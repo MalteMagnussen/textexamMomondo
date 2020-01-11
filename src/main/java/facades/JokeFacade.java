@@ -55,6 +55,11 @@ public class JokeFacade {
     private static JokeFacade instance;
     private static EntityManagerFactory emf;
 
+    private final String URI = "https://api.chucknorris.io/jokes/random?category=";
+
+    private static final ExecutorService workingJack = Executors.newCachedThreadPool();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
     //Private Constructor to ensure Singleton
     private JokeFacade() {
     }
@@ -82,21 +87,13 @@ public class JokeFacade {
         return emf.createEntityManager();
     }
 
-    private final String URI = "https://api.chucknorris.io/jokes/random?category=";
-
-    private static final ExecutorService workingJack = Executors.newCachedThreadPool();
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-
-    @Context
-    private UriInfo context;
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public JokeOutDTO getJson(String categories) throws InterruptedException, ExecutionException {
+    public JokeOutDTO getJoke(String categories) throws InterruptedException, ExecutionException {
 
         List<String> categoriesList = handleString(categories);
 
+        /*
+        Get the Futures asynchronously.
+         */
         List<Future<JokeInDTO>> jokes = new ArrayList();
         categoriesList.forEach((c) -> {
             Future<JokeInDTO> joke = workingJack.submit(() -> {
@@ -104,11 +101,14 @@ public class JokeFacade {
             });
             jokes.add(joke);
         });
+
+        // Make them into JokeInDTOs
         List<JokeInDTO> inJokes = new ArrayList();
         for (Future<JokeInDTO> j : jokes) {
             inJokes.add(j.get());
         }
 
+        // Make JokeInDTO into a JokeOutDTO
         JokeOutDTO returnJoke = new JokeOutDTO();
         inJokes.forEach((j) -> {
             returnJoke.addJoke(new JokeDTO(j));
@@ -149,6 +149,9 @@ public class JokeFacade {
      * @return List of the categories.
      */
     private List<String> handleString(String str) {
+        
+        if (str == null) throw new WebApplicationException("Bad Request.", Response.Status.BAD_REQUEST);
+        
         List<String> categories = Arrays.asList(str.split(","));
 
         if (categories.size() > 4) {
@@ -156,9 +159,11 @@ public class JokeFacade {
         }
 
         for (String s : categories) {
-            if (!acceptable_categories.contains(s)) throw new WebApplicationException("Category " + s + " doesn't exist.", Response.Status.BAD_REQUEST);
+            if (!acceptable_categories.contains(s)) {
+                throw new WebApplicationException("Category " + s + " doesn't exist.", Response.Status.BAD_REQUEST);
+            }
         }
-        
+
         return categories;
 
     }

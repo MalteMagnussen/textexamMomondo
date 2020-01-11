@@ -21,27 +21,24 @@ public class JokeInDTO {
  * "url":"https://api.chucknorris.io/jokes/muujj6xvr16hazym0b5tjw",
  * "value":"When Chuck Norris was a baby, he didn't suck his mother's breast. His mother served him whiskey, straight out of the bottle."}
  */
-    private String category, created_at, icon_url, id, updated_at, url, value;
+    /*
+    {"categories":["food"],
+    "created_at":"2020-01-05 13:42:23.240175",
+    "icon_url":"https://assets.chucknorris.host/img/avatar/chuck-norris.png",
+    "id":"zW8KKcrRRoOJ1cW_2m6VaQ","updated_at":"2020-01-05 13:42:23.240175","url":"https://api.chucknorris.io/jokes/zW8KKcrRRoOJ1cW_2m6VaQ","value":"There are more than 1 billion Chinese people throughout the world because Chuck Norris likes Chinese food."}
+    */
+    private String created_at, icon_url, id, updated_at, url, value;
+    private String[] categories;
 
     public JokeInDTO() {
     }
 
-    public JokeInDTO(String category, String created_at, String icon_url, String id, String updated_at, String url, String value) {
-        this.category = category;
-        this.created_at = created_at;
-        this.icon_url = icon_url;
-        this.id = id;
-        this.updated_at = updated_at;
-        this.url = url;
-        this.value = value;
+    public String[] getCategories() {
+        return categories;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(String[] categories) {
+        this.categories = categories;
     }
 
     public String getCreated_at() {
