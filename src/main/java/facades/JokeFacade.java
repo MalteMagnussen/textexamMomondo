@@ -3,6 +3,7 @@ package facades;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import dto.CountDTO;
 import dto.JokeDTO;
 import dto.JokeInDTO;
 import dto.JokeOutDTO;
@@ -212,9 +213,25 @@ SELECT * FROM testexamMomondo_base.CATEGORY;
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            Request request = new Request(categoriesList);
+            Request request = new Request();
+            categoriesList.forEach((name) -> {
+                request.addCategory(em.createNamedQuery("Category.getCategoryByName", Category.class).setParameter("name", name).getSingleResult());
+            });
             em.persist(request);
             em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public CountDTO getCategoryCount(String category) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Integer count = em.createNamedQuery("Request.getCount", Integer.class).setParameter("name", category).getSingleResult();
+            CountDTO res = new CountDTO(category, count);
+            em.getTransaction().commit();
+            return res;
         } finally {
             em.close();
         }

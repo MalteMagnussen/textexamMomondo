@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
 
 @Entity
 @NamedQueries({
@@ -24,7 +26,7 @@ public class Request implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToMany(mappedBy = "requests")
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Category> categories;
 
     /*
@@ -37,6 +39,7 @@ public class Request implements Serializable {
     
      */
     // Timestamp is a reserved keyword.
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date timestamb;
 
     public Request() {
@@ -55,6 +58,7 @@ public class Request implements Serializable {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+    
 
     public Date getTimestamb() {
         return timestamb;
@@ -70,6 +74,10 @@ public class Request implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void addCategory(Category category) {
+        categories.add(category);
     }
 
 }

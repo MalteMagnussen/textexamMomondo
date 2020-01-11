@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
@@ -20,6 +22,8 @@ import javax.persistence.ManyToMany;
  */
 @Entity
 //@NamedQuery(name = "Request.deleteAllRows", query = "DELETE from Request")
+@NamedQueries({
+    @NamedQuery(name = "Category.getCategoryByName", query = "SELECT category FROM Category category WHERE category.name = :name")})
 
 public class Category implements Serializable {
 
@@ -29,12 +33,28 @@ public class Category implements Serializable {
     private int id;
 
     private String name;
-    
-    @ManyToMany
+
+    @ManyToMany(mappedBy = "categories")
     private List<Request> requests;
-    
+
     public Category() {
         this.requests = new ArrayList();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Request> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<Request> requests) {
+        this.requests = requests;
     }
 
     public int getId() {
@@ -44,5 +64,5 @@ public class Category implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    
+
 }
