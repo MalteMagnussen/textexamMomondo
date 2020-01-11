@@ -95,8 +95,8 @@ public class JokeFacade {
         return emf.createEntityManager();
     }
 
-    public JokeOutDTO getJoke(String categories) throws InterruptedException, ExecutionException, TimeoutException {
-        List<String> categoriesList = handleString(categories);
+    public JokeOutDTO getJoke(String categories, boolean permission) throws InterruptedException, ExecutionException, TimeoutException {
+        List<String> categoriesList = handleString(categories, permission);
 
         /*
         Get the Futures asynchronously.
@@ -166,7 +166,7 @@ public class JokeFacade {
      * @param categories Example: "food,fashion,history"
      * @return List of the categories.
      */
-    private List<String> handleString(String str) {
+    private List<String> handleString(String str, boolean permission) {
 
         if (str == null) {
             throw new WebApplicationException("Bad Request.", Response.Status.BAD_REQUEST);
@@ -174,10 +174,15 @@ public class JokeFacade {
 
         List<String> categories = Arrays.asList(str.split(","));
 
-        if (categories.size() > 4) {
-            throw new WebApplicationException("Max 4 categories in request.", Response.Status.BAD_REQUEST);
+        if (permission) {
+            if (categories.size() > 12) {
+                throw new WebApplicationException("Max 12 categories in request.", Response.Status.BAD_REQUEST);
+            }
+        } else {
+            if (categories.size() > 4) {
+                throw new WebApplicationException("Max 4 categories in request.", Response.Status.BAD_REQUEST);
+            }
         }
-
         for (String s : categories) {
             if (!acceptable_categories.contains(s)) {
                 throw new WebApplicationException("Category " + s + " does not exist.", Response.Status.BAD_REQUEST);
