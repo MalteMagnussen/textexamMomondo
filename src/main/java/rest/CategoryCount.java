@@ -26,6 +26,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -67,6 +68,7 @@ public class CategoryCount {
      */
     @GET
     @Path("{category}")
+    @RolesAllowed({"admin"})
     @Produces(MediaType.APPLICATION_JSON)
     public CountDTO getCount(@PathParam("category") String category) {
         return FACADE.getCategoryCount(category);

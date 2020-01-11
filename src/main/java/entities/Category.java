@@ -23,7 +23,7 @@ import javax.persistence.NamedQuery;
 @Entity
 //@NamedQuery(name = "Request.deleteAllRows", query = "DELETE from Request")
 @NamedQueries({
-    @NamedQuery(name = "Category.getCategoryByName", query = "SELECT category FROM Category category WHERE category.name = :name")})
+    @NamedQuery(name = "Category.getCategoryByName", query = "SELECT c FROM Category c WHERE c.name = :name")})
 
 public class Category implements Serializable {
 

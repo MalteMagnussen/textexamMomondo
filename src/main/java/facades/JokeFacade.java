@@ -228,7 +228,7 @@ SELECT * FROM testexamMomondo_base.CATEGORY;
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            Integer count = em.createNamedQuery("Request.getCount", Integer.class).setParameter("name", category).getSingleResult();
+            Long count = em.createNamedQuery("Request.getCount", Long.class).setParameter("name", category).getSingleResult();
             CountDTO res = new CountDTO(category, count);
             em.getTransaction().commit();
             return res;

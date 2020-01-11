@@ -17,7 +17,7 @@ import javax.persistence.Temporal;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Request.deleteAllRows", query = "DELETE FROM Request"),
-    @NamedQuery(name = "Request.getCount", query = "SELECT count(request) FROM Request request WHERE :name MEMBER OF request.categories")
+    @NamedQuery(name = "Request.getCount", query = "SELECT count(r) FROM Request r WHERE (SELECT c FROM Category c WHERE c.name = :name) MEMBER OF r.categories")
 })
 public class Request implements Serializable {
 
@@ -43,10 +43,6 @@ public class Request implements Serializable {
     private Date timestamb;
 
     public Request() {
-        this.categories = new ArrayList();
-    }
-
-    public Request(List<String> categories) {
         this.categories = new ArrayList();
         this.timestamb = new Date();
     }

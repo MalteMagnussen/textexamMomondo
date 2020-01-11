@@ -10,22 +10,23 @@ package dto;
  * @author Malte
  */
 public class CountDTO {
-    private Integer count;
+
+    private Long count;
     private String category;
 
     public CountDTO() {
     }
 
-    public CountDTO(String category, Integer count) {
+    public CountDTO(String category, Long count) {
         this.count = count;
         this.category = category;
     }
 
-    public Integer getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 
@@ -36,6 +37,5 @@ public class CountDTO {
     public void setCategory(String category) {
         this.category = category;
     }
-    
-    
+
 }
