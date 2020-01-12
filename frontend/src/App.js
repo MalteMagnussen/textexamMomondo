@@ -16,6 +16,7 @@ import {
   Prompt
 } from "react-router-dom";
 import ShowRoles from "./components/ShowRoles.jsx";
+import FourJokes from "./components/allClients.jsx";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -23,25 +24,34 @@ const App = () => {
   return (
     <>
       <Router>
-        <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} roles={roles} setRoles={setRoles} />
+        <Header
+          loggedIn={loggedIn}
+          setLoggedIn={setLoggedIn}
+          roles={roles}
+          setRoles={setRoles}
+        />
         <div className="container">
           <Switch>
             <Route exact path="/" component={WelcomePage} />
             <Route
               path="/login"
-              render={() => 
-              <LogInScreen 
-                loggedIn={loggedIn} 
-                setLoggedIn={setLoggedIn} 
-                roles={roles} 
-                setRoles={setRoles} 
-              />}
+              render={() => (
+                <LogInScreen
+                  loggedIn={loggedIn}
+                  setLoggedIn={setLoggedIn}
+                  roles={roles}
+                  setRoles={setRoles}
+                />
+              )}
             />
             <Route path="/search">
               <Search permission={loggedIn} />
             </Route>
             <Route path="/admin">
-              <Admin loggedIn={loggedIn} roles={roles}/>
+              <Admin loggedIn={loggedIn} roles={roles} />
+            </Route>
+            <Route path="/fourJokes">
+              <FourJokes />
             </Route>
             <Route component={NoMatch} />
           </Switch>
@@ -65,40 +75,43 @@ const Header = ({ loggedIn, setLoggedIn, roles, setRoles }) => {
       </li>
 
       {/*Login / logout start*/}
-      {!loggedIn ? (<li>
-        <NavLink activeClassName="active" to="/login">
-          Login
-        </NavLink>
-      </li>) : 
-      (<li>
-        <NavLink onClick={() => {
-          setLoggedIn(false);
-          facade.logout();
-          setRoles([]);
-          }} to="/login">
-          Log out
-        </NavLink>
-      </li>)}
+      {!loggedIn ? (
+        <li>
+          <NavLink activeClassName="active" to="/login">
+            Login
+          </NavLink>
+        </li>
+      ) : (
+        <li>
+          <NavLink
+            onClick={() => {
+              setLoggedIn(false);
+              facade.logout();
+              setRoles([]);
+            }}
+            to="/login"
+          >
+            Log out
+          </NavLink>
+        </li>
+      )}
+      <li>
+        <NavLink to="fourJokes">Four Jokes</NavLink>
+      </li>
       {/*Login / logout end*/}
-      { loggedIn && 
-      (<li>
-        <NavLink to="/search">
-          Search
-        </NavLink>
-      </li>)
-      }
-      { (loggedIn && roles.includes("admin")) && 
-      (<li>
-        <NavLink to="/admin">
-          Admin panel
-        </NavLink>
-      </li>)
-      }
+      {loggedIn && (
+        <li>
+          <NavLink to="/search">Search</NavLink>
+        </li>
+      )}
+      {loggedIn && roles.includes("admin") && (
+        <li>
+          <NavLink to="/admin">Admin panel</NavLink>
+        </li>
+      )}
     </ul>
   );
 };
-
-
 
 const LogInScreen = ({ loggedIn, setLoggedIn, roles, setRoles }) => {
   const [message, setMessage] = useState("");
@@ -125,12 +138,12 @@ const LogInScreen = ({ loggedIn, setLoggedIn, roles, setRoles }) => {
         <LogIn login={login} message={message} />
       ) : (
         <div>
-          { roles.length &&
-          <>
-            <ShowRoles roles={roles} />
-            <LoggedIn />
-          </>
-          }
+          {roles.length && (
+            <>
+              <ShowRoles roles={roles} />
+              <LoggedIn />
+            </>
+          )}
         </div>
       )}
       <br></br>

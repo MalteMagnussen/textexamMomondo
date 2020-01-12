@@ -61,7 +61,9 @@ const SearchFunction = () => {
       <button type="button" onClick={handleSubmit}>
         Get by ID
       </button>
-      {persons && <MemberTable members={!Array.isArray(persons) ? [persons] : persons} />}
+      {persons && (
+        <MemberTable members={!Array.isArray(persons) ? [persons] : persons} />
+      )}
     </>
   );
 };
@@ -104,19 +106,18 @@ function Row(props) {
     <tr>
       <td>{props.fName}</td>
       <td>
-      {props.hobbylist.map((element, index) => {
-        return <li key={index}>{element.hobbyName}</li>;
-      })}
+        {props.hobbylist.map((element, index) => {
+          return <li key={index}>{element.hobbyName}</li>;
+        })}
       </td>
       <td>{props.id}</td>
       <td>{props.lName}</td>
       <td>{props.mail}</td>
-      <td>{(props.residence.road)}</td>
-      <td>{(props.residence.town)}</td>
+      <td>{props.residence.road}</td>
+      <td>{props.residence.town}</td>
       <td>{props.telephone}</td>
     </tr>
   );
 }
-
 
 export default Search;
