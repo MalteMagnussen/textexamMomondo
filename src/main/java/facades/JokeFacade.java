@@ -88,7 +88,6 @@ VALUES
 SELECT * FROM testexamMomondo_base.CATEGORY;
     
      */
-    
     /**
      *
      * @param _emf
@@ -100,7 +99,7 @@ SELECT * FROM testexamMomondo_base.CATEGORY;
             instance = new JokeFacade();
         }
         if (acceptable_categories.isEmpty()) {
-            String[] categories = {"Career", "celebrity", "dev", "explicit", "fashion", "food", "history", "money", "movie", "music", "political", "science", "sport", "travel"};
+            String[] categories = {"career", "celebrity", "dev", "explicit", "fashion", "food", "history", "money", "movie", "music", "political", "science", "sport", "travel"};
             acceptable_categories.addAll(Arrays.asList(categories));
         }
         return instance;
@@ -112,16 +111,17 @@ SELECT * FROM testexamMomondo_base.CATEGORY;
 
     public JokeOutDTO getJoke(String categories, boolean permission) throws InterruptedException, ExecutionException, TimeoutException {
         List<String> categoriesList = handleString(categories, permission);
-        saveHistoricalData(categoriesList);
-//        workingJack.shutdown();
-        return asyncGet(categoriesList);
-//        workingJack.shutdown();
+        try {
+            return asyncGet(categoriesList);
+        } finally {
+            saveHistoricalData(categoriesList);
+        }
     }
 
     private JokeOutDTO asyncGet(List<String> categoriesList) throws InterruptedException, ExecutionException {
         /*
         Get the Futures asynchronously.
-        */
+         */
         Queue<Future<JokeInDTO>> queue = new ArrayBlockingQueue(categoriesList.size());
         for (String endpoint : categoriesList) {
             Future<JokeInDTO> future = workingJack.submit(() -> GSON.fromJson(doGetJson(endpoint), JokeInDTO.class));
@@ -222,7 +222,7 @@ SELECT * FROM testexamMomondo_base.CATEGORY;
             em.close();
         }
     }
-    
+
     public CountDTO getCategoryCount(String category) {
         EntityManager em = getEntityManager();
         try {
