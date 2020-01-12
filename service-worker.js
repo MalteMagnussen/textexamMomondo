@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/textexamMomondo/precache-manifest.85ec042853f39667d7abf11c7e7f3c62.js"
+  "/textexamMomondo/precache-manifest.960c10e40c1f8a5f98f93e5e7f860350.js"
 );
 
 self.addEventListener('message', (event) => {

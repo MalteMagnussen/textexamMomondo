@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e66b1f2f12aa05c44904e2b5465217cc",
+    "revision": "cdd87e307550c3a069d0198fc83e9eca",
     "url": "/textexamMomondo/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/textexamMomondo/static/css/2.2ec3db0d.chunk.css"
   },
   {
-    "revision": "64f7055cb4878d0a716d",
+    "revision": "3943468212f981024564",
     "url": "/textexamMomondo/static/css/main.d2b2d954.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/textexamMomondo/static/js/2.1a4768bb.chunk.js.LICENSE"
   },
   {
-    "revision": "64f7055cb4878d0a716d",
-    "url": "/textexamMomondo/static/js/main.e066ca88.chunk.js"
+    "revision": "3943468212f981024564",
+    "url": "/textexamMomondo/static/js/main.e5c5049d.chunk.js"
   },
   {
     "revision": "a0af7bf3b11b441b0c21",
