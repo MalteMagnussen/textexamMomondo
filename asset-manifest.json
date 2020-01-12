@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/textexamMomondo/static/css/main.d2b2d954.chunk.css",
+    "main.js": "/textexamMomondo/static/js/main.229224ff.chunk.js",
+    "main.js.map": "/textexamMomondo/static/js/main.229224ff.chunk.js.map",
+    "runtime-main.js": "/textexamMomondo/static/js/runtime-main.f2292ebe.js",
+    "runtime-main.js.map": "/textexamMomondo/static/js/runtime-main.f2292ebe.js.map",
+    "static/css/2.2ec3db0d.chunk.css": "/textexamMomondo/static/css/2.2ec3db0d.chunk.css",
+    "static/js/2.e50739c0.chunk.js": "/textexamMomondo/static/js/2.e50739c0.chunk.js",
+    "static/js/2.e50739c0.chunk.js.map": "/textexamMomondo/static/js/2.e50739c0.chunk.js.map",
+    "index.html": "/textexamMomondo/index.html",
+    "precache-manifest.7f8180a604a3b94ff07fc069cc643eca.js": "/textexamMomondo/precache-manifest.7f8180a604a3b94ff07fc069cc643eca.js",
+    "service-worker.js": "/textexamMomondo/service-worker.js",
+    "static/css/2.2ec3db0d.chunk.css.map": "/textexamMomondo/static/css/2.2ec3db0d.chunk.css.map",
+    "static/css/main.d2b2d954.chunk.css.map": "/textexamMomondo/static/css/main.d2b2d954.chunk.css.map",
+    "static/js/2.e50739c0.chunk.js.LICENSE": "/textexamMomondo/static/js/2.e50739c0.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f2292ebe.js",
+    "static/css/2.2ec3db0d.chunk.css",
+    "static/js/2.e50739c0.chunk.js",
+    "static/css/main.d2b2d954.chunk.css",
+    "static/js/main.229224ff.chunk.js"
+  ]
+}
