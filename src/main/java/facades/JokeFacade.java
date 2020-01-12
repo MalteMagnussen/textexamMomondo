@@ -113,17 +113,20 @@ SELECT * FROM testexamMomondo_base.CATEGORY;
     public JokeOutDTO getJoke(String categories, boolean permission) throws InterruptedException, ExecutionException, TimeoutException {
         List<String> categoriesList = handleString(categories, permission);
         saveHistoricalData(categoriesList);
-        
+//        workingJack.shutdown();
+        return asyncGet(categoriesList);
+//        workingJack.shutdown();
+    }
+
+    private JokeOutDTO asyncGet(List<String> categoriesList) throws InterruptedException, ExecutionException {
         /*
         Get the Futures asynchronously.
-         */
+        */
         Queue<Future<JokeInDTO>> queue = new ArrayBlockingQueue(categoriesList.size());
-
         for (String endpoint : categoriesList) {
             Future<JokeInDTO> future = workingJack.submit(() -> GSON.fromJson(doGetJson(endpoint), JokeInDTO.class));
             queue.add(future);
         }
-
         List<JokeInDTO> inJokes = new ArrayList();
         while (!queue.isEmpty()) {
             Future<JokeInDTO> future = queue.poll();
@@ -133,7 +136,6 @@ SELECT * FROM testexamMomondo_base.CATEGORY;
                 queue.add(future);
             }
         }
-
         // Make JokeInDTO into a JokeOutDTO
         JokeOutDTO returnJoke = new JokeOutDTO();
         inJokes.forEach((j) -> {
@@ -143,10 +145,7 @@ SELECT * FROM testexamMomondo_base.CATEGORY;
             System.out.println(j);
             returnJoke.addJoke(new JokeDTO(j));
         });
-
-//        workingJack.shutdown();
         return returnJoke;
-//        workingJack.shutdown();
     }
 
     /**
