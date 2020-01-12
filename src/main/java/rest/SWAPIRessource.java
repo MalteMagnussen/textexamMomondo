@@ -110,34 +110,34 @@ public class SWAPIRessource {
         return "{\"msg\": \"Hello to (superuser) User: " + thisuser + "\"}";
     }
 
-    @GET
-    @Path("populate")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String populateDatabase() {
-
-        EntityManager em = EMF.createEntityManager();
-        try {
-            User user = new User("user", "user");
-            User admin = new User("admin", "admin");
-            User both = new User("both", "both");
-
-            em.getTransaction().begin();
-            Role userRole = new Role("user");
-            Role adminRole = new Role("admin");
-            user.addRole(userRole);
-            admin.addRole(adminRole);
-            both.addRole(userRole);
-            both.addRole(adminRole);
-            em.persist(userRole);
-            em.persist(adminRole);
-            em.persist(user);
-            em.persist(admin);
-            em.persist(both);
-            em.getTransaction().commit();
-
-        } finally {
-            em.close();
-        }
-        return "{\"message\":\"Database populated\"}";
-    }
+//    @GET
+//    @Path("populate")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String populateDatabase() {
+//
+//        EntityManager em = EMF.createEntityManager();
+//        try {
+//            User user = new User("user", "user");
+//            User admin = new User("admin", "admin");
+//            User both = new User("both", "both");
+//
+//            em.getTransaction().begin();
+//            Role userRole = new Role("user");
+//            Role adminRole = new Role("admin");
+//            user.addRole(userRole);
+//            admin.addRole(adminRole);
+//            both.addRole(userRole);
+//            both.addRole(adminRole);
+//            em.persist(userRole);
+//            em.persist(adminRole);
+//            em.persist(user);
+//            em.persist(admin);
+//            em.persist(both);
+//            em.getTransaction().commit();
+//
+//        } finally {
+//            em.close();
+//        }
+//        return "{\"message\":\"Database populated\"}";
+//    }
 }
