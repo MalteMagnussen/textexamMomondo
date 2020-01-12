@@ -48,14 +48,7 @@ const ApiFacade = () => {
 
   const fetchGetData = (endpoint, value) => {
     const options = makeOptions("GET", true); //True add's the token
-    return fetch(URL + `/api/krak/${endpoint}/${value}`, options).then(
-      handleHttpErrors
-    );
-  };
-
-  const fetchFourJokes = categories => {
-    const options = makeOptions("GET", false); // We don't need token for this endpoint. True if you want token.
-    return fetch(URL + "/api/jokeByCategory/" + categories, options).then(
+    return fetch(URL + `/api/${endpoint}/${value}`, options).then(
       handleHttpErrors
     );
   };
@@ -88,8 +81,7 @@ const ApiFacade = () => {
   return {
     login,
     logout,
-    fetchGetData,
-    fetchFourJokes
+    fetchGetData
   };
 };
 

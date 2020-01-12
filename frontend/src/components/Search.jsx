@@ -26,7 +26,7 @@ const SearchFunction = () => {
 
   const getPersonData = (endpoint, value) => {
     facade
-      .fetchGetData(endpoint, value)
+      .fetchGetData("krak/" + endpoint, value)
       .then(res => {
         console.log(res);
         setPersons(res);

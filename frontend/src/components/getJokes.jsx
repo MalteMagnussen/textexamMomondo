@@ -18,7 +18,7 @@ const acceptable_categories = {
   sport: false,
   travel: false
 };
-const FourJokes = () => {
+const GetJokes = ({ loggedIn }) => {
   const [categories, setCategories] = useState(acceptable_categories);
   const [jokes, setJokes] = useState({});
 
@@ -36,7 +36,7 @@ const FourJokes = () => {
       if (categories[category] == true) validCategories.push(category);
     });
 
-    if (validCategories.length > 4) {
+    if (!loggedIn && validCategories.length > 4) {
       return;
     }
 
@@ -45,8 +45,16 @@ const FourJokes = () => {
       return element;
     });
 
+    let URL = loggedIn => {
+      if (loggedIn) {
+        return "jokeByCategoryV2";
+      } else {
+        return "jokeByCategory";
+      }
+    };
+
     facade
-      .fetchFourJokes(myCategories)
+      .fetchGetData(URL(loggedIn), myCategories)
       .then(res => {
         setJokes(res);
         console.log(res);
@@ -67,7 +75,7 @@ const FourJokes = () => {
       <br />
       <div>
         <h3> Select jokes </h3>
-        <h5> You may only select up to 4. </h5>
+        <h5> {!loggedIn && "You may only select 4 categories."} </h5>
         <form>
           {Object.keys(categories).map((e, index) => {
             return (
@@ -109,4 +117,4 @@ const FourJokes = () => {
   );
 };
 
-export default FourJokes;
+export default GetJokes;

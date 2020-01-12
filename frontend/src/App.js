@@ -16,7 +16,7 @@ import {
   Prompt
 } from "react-router-dom";
 import ShowRoles from "./components/ShowRoles.jsx";
-import FourJokes from "./components/allClients.jsx";
+import Jokes from "./components/getJokes.jsx";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -50,8 +50,8 @@ const App = () => {
             <Route path="/admin">
               <Admin loggedIn={loggedIn} roles={roles} />
             </Route>
-            <Route path="/fourJokes">
-              <FourJokes />
+            <Route path="/Jokes">
+              <Jokes loggedIn={loggedIn} />
             </Route>
             <Route component={NoMatch} />
           </Switch>
@@ -95,10 +95,10 @@ const Header = ({ loggedIn, setLoggedIn, roles, setRoles }) => {
           </NavLink>
         </li>
       )}
-      <li>
-        <NavLink to="fourJokes">Four Jokes</NavLink>
-      </li>
       {/*Login / logout end*/}
+      <li>
+        <NavLink to="/Jokes">Jokes</NavLink>
+      </li>
       {loggedIn && (
         <li>
           <NavLink to="/search">Search</NavLink>
