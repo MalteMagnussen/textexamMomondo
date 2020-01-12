@@ -112,6 +112,7 @@ public class SWAPIRessource {
 
     @GET
     @Path("populate")
+    @Produces(MediaType.APPLICATION_JSON)
     public String populateDatabase() {
 
         EntityManager em = EMF.createEntityManager();
