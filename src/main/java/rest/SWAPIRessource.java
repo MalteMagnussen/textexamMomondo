@@ -138,6 +138,6 @@ public class SWAPIRessource {
         } finally {
             em.close();
         }
-        return "Database populated.";
+        return "{\"message\":\"Database populated\"}";
     }
 }
