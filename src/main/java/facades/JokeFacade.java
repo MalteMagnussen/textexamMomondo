@@ -9,6 +9,8 @@ import dto.JokeInDTO;
 import dto.JokeOutDTO;
 import entities.Category;
 import entities.Request;
+import entities.Role;
+import entities.User;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -236,4 +238,29 @@ SELECT * FROM testexamMomondo_base.CATEGORY;
         }
     }
 
+    public void populate() {
+        EntityManager em = getEntityManager();
+        try {
+            User user = new User("user", "user");
+            User admin = new User("admin", "admin");
+            User both = new User("both", "both");
+
+            em.getTransaction().begin();
+            Role userRole = new Role("user");
+            Role adminRole = new Role("admin");
+            user.addRole(userRole);
+            admin.addRole(adminRole);
+            both.addRole(userRole);
+            both.addRole(adminRole);
+            em.persist(userRole);
+            em.persist(adminRole);
+            em.persist(user);
+            em.persist(admin);
+            em.persist(both);
+            em.getTransaction().commit();
+
+        } finally {
+            em.close();
+        }
+    }
 }

@@ -73,6 +73,14 @@ public class CategoryCount {
     public CountDTO getCount(@PathParam("category") String category) {
         return FACADE.getCategoryCount(category);
     }
+    
+    @GET
+    @Path("populate")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String populateDatabase() {
+        FACADE.populate();
+        return "{\"message\":\"Database populated\"}";
+    }
    
    
 }
