@@ -1,5 +1,6 @@
 package rest;
 
+import entities.Role;
 import entities.User;
 import facades.ApiFacade;
 import java.util.List;
@@ -58,7 +59,7 @@ public class SWAPIRessource {
             em.close();
         }
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("user")
@@ -76,11 +77,13 @@ public class SWAPIRessource {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
     }
-    
+
     /**
-     * The idea is here, that this endpoint is only available to registered users (and admins)
-     * While the allUsers (/all) endpoint is available to anyone
-     * @return 
+     * The idea is here, that this endpoint is only available to registered
+     * users (and admins) While the allUsers (/all) endpoint is available to
+     * anyone
+     *
+     * @return
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -90,11 +93,12 @@ public class SWAPIRessource {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Hello to (admin OR user, but not a nobody) User: " + thisuser + "\"}";
     }
-    
+
     /**
-     * DEPRECATED: DONT THINK THIS IS POSSIBLE.
-     * Only accessible by a super-user (that holds both admin & user)
-     * @return 
+     * DEPRECATED: DONT THINK THIS IS POSSIBLE. Only accessible by a super-user
+     * (that holds both admin & user)
+     *
+     * @return
      */
     @Deprecated
     @GET
@@ -104,5 +108,35 @@ public class SWAPIRessource {
     public String getBothRoles() {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Hello to (superuser) User: " + thisuser + "\"}";
+    }
+
+    @GET
+    @Path("populate")
+    public String populateDatabase() {
+
+        EntityManager em = EMF.createEntityManager();
+        try {
+            User user = new User("user", "user");
+            User admin = new User("admin", "admin");
+            User both = new User("both", "both");
+
+            em.getTransaction().begin();
+            Role userRole = new Role("user");
+            Role adminRole = new Role("admin");
+            user.addRole(userRole);
+            admin.addRole(adminRole);
+            both.addRole(userRole);
+            both.addRole(adminRole);
+            em.persist(userRole);
+            em.persist(adminRole);
+            em.persist(user);
+            em.persist(admin);
+            em.persist(both);
+            em.getTransaction().commit();
+
+        } finally {
+            em.close();
+        }
+        return "Database populated.";
     }
 }
