@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import facade from "../apiFacade.jsx";
 
 const acceptable_categories = {
@@ -82,7 +82,29 @@ const FourJokes = () => {
           </Button>
         </form>
       </div>
-      <p> Results: {JSON.stringify(jokes)}</p>
+      <div>
+        <br />
+        <Table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Joke</th>
+            </tr>
+          </thead>
+          <tbody>
+            {jokes &&
+              jokes.jokes &&
+              jokes.jokes.map((element, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{element.category}</td>
+                    <td>{element.joke}</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </Table>
+      </div>
     </>
   );
 };
